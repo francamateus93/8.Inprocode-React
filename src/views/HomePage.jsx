@@ -50,7 +50,7 @@ const HomePage = () => {
             backgroundPosition: "center",
           }}
         >
-          <div className="absolute inset-0 bg-black/40 bg-opacity-50 flex flex-col justify-center items-start text-white text-start py-6 px-24">
+          <div className="absolute inset-0 bg-black/40 bg-opacity-50 flex flex-col justify-center items-center text-white text-center py-6 px-24">
             <div className="">
               <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
                 {image.title}
@@ -59,8 +59,8 @@ const HomePage = () => {
                 {image.text}
               </p>
               <Link to="/map">
-                <button className="mt-4 border border-white rounded-lg px-10 py-2 cursor-pointer">
-                  Find out
+                <button className="mt-4 border-2 uppercase font-medium border-white rounded-lg px-10 py-2 cursor-pointer">
+                  See More
                 </button>
               </Link>
             </div>
