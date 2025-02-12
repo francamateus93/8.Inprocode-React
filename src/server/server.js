@@ -2,6 +2,8 @@ import mysql from "mysql2";
 import express, { json } from "express";
 import cors from "cors";
 
+const router = express.Router();
+
 // Config. variables
 import dotenv from "dotenv";
 dotenv.config();
@@ -28,45 +30,46 @@ db.connect((err) => {
 });
 
 // Get users
-app.get("/users", (req, res) => {
+router.get("/users", (req, res) => {
   db.query("SELECT * FROM users", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
   });
 });
 
-// Get users by Id
-app.get("/users:id", (req, res) => {
+// Add new user
+router.post("/users", (req, res) => {
+  const { full_name, email, phone, location, services } = req.body;
   db.query(
-    "SELECT * FROM users WHERE Id = ?",
-    [req.params.id],
+    "INSERT INTO users (full_name, email, phone, location, services) VALUES (?, ?, ?, ?, ?)",
+    [full_name, email, phone, location, services],
     (err, result) => {
       if (err) return res.status(500).json({ error: err.message });
-      if (result.length === 0)
-        return res.status(404).json({ message: "User not found" });
-      res.json(result[0]);
+      res.json({ message: "User created successfully", id: result.insertId });
     }
   );
 });
 
-// Add new user
-app.post("/users", (req, res) => {
-  const { username, email } = req.body;
+// Update user
+router.get("/users:id", (req, res) => {
+  const { full_name, email, phone, location, services } = req.body;
+  const { id } = req.params;
   db.query(
-    "INSERT INTO users (username, email) VALUES (?, ?)",
-    [username, email],
+    "UPDATE users SET full_name = ?, email = ?, phone = ?, location = ?, services = ? WHERE id = ?",
+    [full_name, email, phone, location, services],
     (err, result) => {
       if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: result.insertId, username, email });
+      res.json({ message: "User updated successfully" });
     }
   );
 });
 
 // Delete user
-app.delete("/users/:id", (req, res) => {
-  db.query("DELETE FROM users WHERE id = ?", [req.params.id], (err, result) => {
+router.delete("/users/:id", (req, res) => {
+  const { id } = req.params;
+  db.query("DELETE FROM users WHERE id = ?", [id], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json({ message: "User deleted" });
+    res.json({ message: "User deleted successfully" });
   });
 });
 
@@ -75,3 +78,5 @@ const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`This is the server: http://localhost:${PORT}`);
 });
+
+export default router;
