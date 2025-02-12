@@ -1,7 +1,8 @@
 import axios from "axios";
+// import { response } from "express";
 import React, { useState } from "react";
 
-const UserForm = ({ userAdded }) => {
+const UserForm = ({ setUsers }) => {
   const [form, setForm] = useState({
     full_name: "",
     email: "",
@@ -19,9 +20,17 @@ const UserForm = ({ userAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
     try {
-      await axios.post("http://localhost:5001/users", form);
-      userAdded();
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users`,
+        form
+      );
+      console.log("User added:", response.data);
+      setUsers((prevUsers) => [
+        ...prevUsers,
+        { id: response.data.id, ...form },
+      ]);
       setForm({
         full_name: "",
         email: "",
@@ -30,7 +39,7 @@ const UserForm = ({ userAdded }) => {
         services: "",
       });
     } catch (error) {
-      console.log("Error to handle user:", error);
+      console.log("Error adding user:", error);
     }
   };
 

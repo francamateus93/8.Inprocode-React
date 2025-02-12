@@ -74,7 +74,7 @@ router.delete("/users/:id", (req, res) => {
 });
 
 // Port Server
-const PORT = process.env.PORT || 5001;
+const PORT = import.meta.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`This is the server: http://localhost:${PORT}`);
 });

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const UserTable = () => {
@@ -7,19 +7,23 @@ const UserTable = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/users");
-        setUsers(response.data);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/users`
+        );
+        setUsers(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
-        console.log("Error fetching users:", error);
-        throw error;
+        console.error("Error fetching users:", error.message);
+        setUsers([]);
       }
     };
+
+    fetchUsers();
   }, []);
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/users/${id}`);
-      setUsers(users.filter((user) => user.id !== id));
+      await axios.delete(`${import.meta.env.VITE_API_URL}/users/${id}`);
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
     } catch (error) {
       console.log("Error deleting user:", error);
       throw error;
