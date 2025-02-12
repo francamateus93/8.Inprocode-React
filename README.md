@@ -1,4 +1,4 @@
-# Web Budget Calculator
+# Wellness App
 
 This web application focuses on automating and simplifying the budgeting process for websites. With an intuitive and responsive interface, users can interact with options such as services, pages, and languages to obtain a budget tailored to their needs. Prices are automatically updated based on the user's selections, providing a smooth and personalized experience. It is designed to be scalable and reusable, making maintenance easier.
 

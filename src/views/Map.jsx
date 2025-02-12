@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import UserForm from "../components/UserForm";
-import UserTable from "../components/UserTable";
+import UserForm from "../components/services/UserForm";
+import UserTable from "../components/services/UserTable";
 
 const Map = () => {
   const [users, setUsers] = useState([]);
