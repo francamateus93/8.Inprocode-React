@@ -1,8 +1,9 @@
 import axios from "axios";
 
+const API_URL = `${import.meta.env.VITE_API_URL}`;
 export const fetchUsers = async () => {
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/users`);
+    const response = await axios.get(`${API_URL}/users`);
     setUsers(Array.isArray(response.data) ? response.data : []);
   } catch (error) {
     console.error("Error fetching users:", error.message);

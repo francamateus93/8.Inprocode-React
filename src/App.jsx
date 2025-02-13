@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import HomePage from "./views/HomePage";
 import Map from "./views/Map";
 import FullCalendar from "./views/FullCalendar";
