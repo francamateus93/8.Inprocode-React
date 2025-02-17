@@ -28,10 +28,26 @@ export const addUser = async (user) => {
 
 export const deleteUser = async (id) => {
   try {
-    await axios.delete(`http://localhost:5001/users/users/${id}`);
+    await axios.delete(`http://localhost:5001/users/${id}`);
   } catch (error) {
     console.error(
       "Error deleting user:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+export const updateUser = async (user) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:5001/users/${user.id}`,
+      user
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error updating user:",
       error.response?.data || error.message
     );
     throw error;
