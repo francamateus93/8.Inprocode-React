@@ -2,8 +2,11 @@ import { createPool } from "mysql2/promise";
 import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-dotenv.config();
+import mapRoutes from "./routes/map.js";
+import calendarRoutes from "./routes/calendar.js";
+import graphicsRoutes from "./routes/graphics.js";
 
+dotenv.config();
 const corsOptions = {
   origin: ["http://localhost:5173"],
 };
@@ -23,26 +26,13 @@ export const db = createPool({
   queueLimit: 0,
 });
 
-// db.connect((err) => {
-//   if (err) {
-//     console.error("Error in MySQL:", err);
-//     return;
-//   }
-//   console.log("Connected to MySQL");
-// });
+// Routes
+app.use("/map", mapRoutes);
+app.use("/calendar", calendarRoutes);
+app.use("/graphics", graphicsRoutes);
 
 app.get("/", async (_req, res) => {
   res.json({ message: "Service is running" });
-});
-
-app.get("/users", async (_req, res) => {
-  try {
-    const [rows, fields] = await db.query("SELECT * FROM users");
-    res.json(rows);
-  } catch (err) {
-    console.error("Error in SQL query:", err);
-    return res.status(500).json({ error: err.message });
-  }
 });
 
 app.post("/users", async (req, res) => {
@@ -55,6 +45,16 @@ app.post("/users", async (req, res) => {
     res.json({ message: "User add successfully", id: results.insertId });
   } catch (err) {
     console.error("Error adding user:", err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/users", async (_req, res) => {
+  try {
+    const [rows, fields] = await db.query("SELECT * FROM users");
+    res.json(rows);
+  } catch (err) {
+    console.error("Error in SQL query:", err);
     return res.status(500).json({ error: err.message });
   }
 });

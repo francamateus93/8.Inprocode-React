@@ -6,12 +6,13 @@ export const navLinks = [
   { path: "/map", label: "Map" },
   { path: "/fullcalendar", label: "Calendar" },
   { path: "/graphics", label: "Graphics" },
+  { path: "/users", label: "Users" },
 ];
 
 const NavMenu = ({ isHomePage, isOpen }) => {
   return (
     <div
-      className={`md:flex flex-col md:flex-row gap-2 rounded-xl md:gap-16 mt-2 ${
+      className={`md:flex flex-col md:flex-row gap-2 rounded-xl md:gap-10 mt-2 ${
         isOpen ? "flex flex-col text-center" : "hidden"
       }`}
     >

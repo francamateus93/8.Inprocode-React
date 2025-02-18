@@ -67,7 +67,7 @@ const UserTable = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto px-4 w-full">
       {editingUser && (
         <div className="mb-4 p-4 bg-gray-100 rounded">
           <h3>Edit User</h3>

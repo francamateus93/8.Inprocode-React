@@ -35,14 +35,14 @@ const UserForm = ({ setUsers }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto w-2xl">
       <h2 className="text-2xl font-bold mb-4">Add User</h2>
       <form onSubmit={handleSubmit}>
         {["full_name", "email", "phone", "location", "services"].map(
           (field) => (
             <input
               key={field}
-              className="border p-2 w-full"
+              className="text-sm border border-gray-400 rounded p-2 mb-2 w-full"
               type={field === "email" ? "email" : "text"}
               name={field}
               placeholder={field.replace("_", " ")}
