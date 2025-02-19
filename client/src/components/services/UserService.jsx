@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "http://localhost:5001";
 
 export const fetchUsers = async () => {
   try {
-    const response = await axios.get("http://localhost:5001/users");
+    const response = await axios.get(`${API_URL}/users`);
     console.log("Fetched users:", response.data);
     return response.data;
   } catch (error) {
@@ -18,7 +18,7 @@ export const fetchUsers = async () => {
 
 export const addUser = async (user) => {
   try {
-    const response = await axios.post("http://localhost:5001/users", user);
+    const response = await axios.post(`${API_URL}/users`, user);
     return response.data;
   } catch (error) {
     console.error("Error adding user:", error.response?.data || error.message);
@@ -28,7 +28,7 @@ export const addUser = async (user) => {
 
 export const deleteUser = async (id) => {
   try {
-    await axios.delete(`http://localhost:5001/users/${id}`);
+    await axios.delete(`${API_URL}/users/${id}`);
   } catch (error) {
     console.error(
       "Error deleting user:",
@@ -40,10 +40,7 @@ export const deleteUser = async (id) => {
 
 export const updateUser = async (user) => {
   try {
-    const response = await axios.put(
-      `http://localhost:5001/users/${user.id}`,
-      user
-    );
+    const response = await axios.put(`${API_URL}/users${user.id}`, user);
     return response.data;
   } catch (error) {
     console.error(

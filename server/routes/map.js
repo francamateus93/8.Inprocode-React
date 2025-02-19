@@ -1,23 +1,30 @@
-import { Router } from "express";
-import { createConnection } from "mysql2/promise";
+import express, { Router } from "express";
+import { createPool } from "mysql2/promise";
+import cors from "cors";
 const router = Router();
 
-// Configuração da conexão (reutilize isso em todos os arquivos de rotas)
-const dbConfig = {
-  host: "localhost",
-  user: "root",
-  password: "franca3633",
-  database: "wellness_app",
+const corsOptions = {
+  origin: ["http://localhost:5173"],
 };
 
-// Rota para obter todas as localizações
+router.use(express.json());
+router.use(cors(corsOptions));
+
+export const db = createPool({
+  host: process.env.MYSQL_HOST || "localhost",
+  user: process.env.MYSQL_USER || "root",
+  password: process.env.MYSQL_PASSWORD || "franca3633",
+  database: process.env.MYSQL_DATABASE || "wellness_app",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
+
 router.get("/map", async (req, res) => {
   try {
-    const connection = await createConnection(dbConfig);
-    const [rows] = await connection.execute(
+    const [rows] = await db.query(
       "SELECT id, name, latitude, longitude, description FROM map"
     );
-    await connection.end();
     res.json(rows);
   } catch (error) {
     console.error("Error getting locations:", error);
@@ -29,16 +36,14 @@ router.post("/map", async (req, res) => {
   const { name, latitude, longitude, description } = req.body;
   if (!name || !latitude || !longitude) {
     return res.status(400).json({
-      message: "Wrong data. Please provide a valid data.",
+      message: "Wrong data. Please provide all valid data.",
     });
   }
   try {
-    const connection = await createConnection(dbConfig);
-    const [result] = await connection.execute(
+    const [result] = await db.query(
       "INSERT INTO map (name, latitude, longitude, description) VALUES (?, ?, ?, ?)",
       [name, latitude, longitude, description]
     );
-    await connection.end();
 
     const newLocation = {
       id: result.insertId,
@@ -50,18 +55,14 @@ router.post("/map", async (req, res) => {
     res.status(201).json(newLocation);
   } catch (error) {
     console.error("Error creating location:", error);
-    res.status(500).json({ message: "Error creating location:" });
+    res.status(500).json({ message: "Error creating location" });
   }
 });
 
 router.delete("/map/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const connection = await mysql.createConnection(dbConfig);
-    const [result] = await connection.execute("DELETE FROM map WHERE id = ?", [
-      id,
-    ]);
-    await connection.end();
+    const [result] = await db.query("DELETE FROM map WHERE id = ?", [id]);
 
     if (result.affectedRows > 0) {
       res.json({ message: "Location deleted successfully" });

@@ -25,3 +25,28 @@ CREATE TABLE map (
   description TEXT,
   creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO map (name, latitude, longitude, description)
+VALUES
+(
+  "Barcelona",
+  41.3828,
+  2.1774,
+  "Description for Barcelona"
+);
+
+-- Calendar
+CREATE TABLE calendar (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  date DATE NOT NULL,
+  description TEXT
+);
+
+INSERT INTO calendar (name, date, description)
+VALUES
+(
+  "Massage Session",
+  "2023-06-01",
+  "Appointment with Massage Therapist in Nature Energy Massage, Barcelona."
+);
