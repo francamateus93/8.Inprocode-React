@@ -20,7 +20,7 @@ export const db = createPool({
   queueLimit: 0,
 });
 
-router.get("/map", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const [rows] = await db.query(
       "SELECT id, name, latitude, longitude, description FROM map"
@@ -32,7 +32,7 @@ router.get("/map", async (req, res) => {
   }
 });
 
-router.post("/map", async (req, res) => {
+router.post("/", async (req, res) => {
   const { name, latitude, longitude, description } = req.body;
   if (!name || !latitude || !longitude) {
     return res.status(400).json({
@@ -59,7 +59,7 @@ router.post("/map", async (req, res) => {
   }
 });
 
-router.delete("/map/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query("DELETE FROM map WHERE id = ?", [id]);

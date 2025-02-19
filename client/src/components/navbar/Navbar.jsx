@@ -15,9 +15,9 @@ const Navbar = () => {
     <nav
       className={`${
         isHomePage
-          ? "bg-transparent text-white flex justify-center items-center"
+          ? "absolute top-0 left-0 bg-transparent text-white flex justify-center items-center"
           : "bg-beige"
-      } absolute top-0 left-0 w-full p-10 flex flex-col md:flex-row justify-center items-center uppercase tracking-tight z-10`}
+      } w-full p-10 flex flex-col md:flex-row justify-center items-center uppercase tracking-tight z-10`}
     >
       <div className="md:hidden">
         <button onClick={toggleMenu} className="focus:outline-none">

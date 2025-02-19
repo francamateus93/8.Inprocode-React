@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export const navLinks = [
   { path: "/", label: "Home" },
   { path: "/map", label: "Map" },
-  { path: "/fullcalendar", label: "Calendar" },
+  { path: "/calendar", label: "Calendar" },
   { path: "/graphics", label: "Graphics" },
   { path: "/users", label: "Users" },
 ];

@@ -7,14 +7,11 @@ import calendarRoutes from "./routes/calendar.js";
 import graphicsRoutes from "./routes/graphics.js";
 
 dotenv.config();
-const corsOptions = {
-  origin: ["http://localhost:5173"],
-};
 
 const app = express();
 
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
-app.use(cors(corsOptions));
 
 export const db = createPool({
   host: process.env.MYSQL_HOST || "localhost",

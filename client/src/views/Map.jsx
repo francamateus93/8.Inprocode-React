@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-// import "leaflet/dist/leaflet.css"; // Importa el CSS de Leaflet
 import L from "leaflet";
 import markerIcon from "../../public/images/marker-icon.png";
 import markerShadow from "../../public/images/marker-shadow.png";
@@ -15,7 +14,6 @@ if (L.Icon.Default) {
 }
 
 const API_URL = "http://localhost:5001";
-// const MAP_API = `${API_URL}/map`;
 
 function Map() {
   const [locations, setLocations] = useState([]);
@@ -36,18 +34,15 @@ function Map() {
     description: "",
   });
 
-  // Carga las ubicaciones al montar el componente
   useEffect(() => {
     const fetchLocations = async () => {
       setIsLoading(true);
       try {
         const response = await axios.get(`${API_URL}/map`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setLocations(data);
+        console.log("Response:", response.data);
+        setLocations(response.data);
       } catch (error) {
+        console.error("Error fetching locations:", error);
         setError(error.message);
       } finally {
         setIsLoading(false);
@@ -56,23 +51,18 @@ function Map() {
     fetchLocations();
   }, []);
 
-  // Función para agregar una nueva ubicación
   const handleAddLocation = async () => {
     if (!newLocation.name || !newLocation.latitude || !newLocation.longitude) {
       alert("Please fill in all required fields.");
       return;
     }
     try {
-      const response = await axios.post(`${API_URL}/map`, {
+      await axios.post(`${API_URL}/map`, newLocation, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      setLocations([...locations, ...response.data]);
+      await fetchLocations();
       setNewLocation({
         name: "",
         latitude: "",
@@ -85,52 +75,46 @@ function Map() {
     }
   };
 
-  // Función para editar una ubicación
   const handleEditLocation = async (locationId) => {
     try {
-      const response = await axios.put(`${API_URL}/map/${locationId}`, {
+      await axios.put(`${API_URL}/map/${locationId}`, editLocation, {
         headers: { "Content-Type": "application/json" },
       });
-
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
-
-      const updatedLocations = locations.map((location) => {
-        if (location.id === locationId) {
-          return { ...location, ...response.data };
-        }
-        return location;
-      });
-      setLocations(updatedLocations);
+      await fetchLocations();
       setEditLocationId(null);
     } catch (error) {
       setError(error.message);
     }
   };
 
-  // Función para eliminar una ubicación
   const handleDeleteLocation = async (locationId) => {
     if (!window.confirm("Are you sure you want to delete this location?")) {
       return;
     }
-
     try {
       await axios.delete(`${API_URL}/map/${locationId}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      setLocations(locations.filter((location) => location.id !== locationId));
+      await fetchLocations();
     } catch (error) {
       setError(error.message);
     }
   };
 
-  // Funciones para manejar el cambio en los campos del formulario
   const handleNewLocationChange = (e) => {
     setNewLocation({ ...newLocation, [e.target.name]: e.target.value });
   };
+
   const handleEditLocationChange = (e) => {
     setEditLocation({ ...editLocation, [e.target.name]: e.target.value });
+  };
+
+  // Helper function to refetch locations
+  const fetchLocations = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/map`);
+      setLocations(response.data);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   if (isLoading) {
@@ -149,6 +133,15 @@ function Map() {
     );
   }
 
+  const bounds =
+    locations.length > 0
+      ? locations.reduce(
+          (acc, location) =>
+            acc.extend([location.latitude, location.longitude]),
+          L.latLngBounds()
+        )
+      : L.latLngBounds([41.2319, 2.1037], [41.2319, 2.1037]); // Default bounds
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Map</h2>
@@ -158,7 +151,7 @@ function Map() {
         onClick={() => setIsAdding(!isAdding)}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
       >
-        {isAdding ? "Cancelar" : "Agregar Ubicación"}
+        {isAdding ? "Cancel" : "Add Location"}
       </button>
       {isAdding && (
         <div className="bg-gray-100 p-4 rounded shadow-md mb-4">
@@ -168,7 +161,7 @@ function Map() {
               htmlFor="name"
               className="block text-sm font-medium text-gray-700"
             >
-              name:
+              Name:
             </label>
             <input
               type="text"
@@ -230,17 +223,17 @@ function Map() {
             onClick={handleAddLocation}
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
-            Guardar Ubicación
+            Save Location
           </button>
         </div>
       )}
 
       {/* Map */}
-      <div className="h-96 rounded-lg overflow-hidden shadow-md">
+      <div id="map" className="h-screen rounded-lg overflow-hidden shadow-md">
         <MapContainer
-          center={[40.7128, -74.006]}
-          zoom={10}
-          style={{ height: "100%", width: "100%" }}
+          center={[41.2319, 2.1037]}
+          zoom={12}
+          className="size-full"
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -260,14 +253,14 @@ function Map() {
                   )}
 
                   {editLocationId === location.id ? (
-                    // Formulario de edición dentro del Popup
+                    // Edit form inside Popup
                     <div>
                       <div className="mb-2">
                         <label
                           htmlFor="name"
                           className="block text-sm font-medium text-gray-700"
                         >
-                          name:
+                          Name:
                         </label>
                         <input
                           type="text"
@@ -329,32 +322,32 @@ function Map() {
                         onClick={() => handleEditLocation(location.id)}
                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
                       >
-                        Guardar Cambios
+                        Save Changes
                       </button>
                       <button
-                        onClick={() => setEditLocationId(null)} // Cancelar edición
+                        onClick={() => setEditLocationId(null)}
                         className="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
                       >
-                        Cancelar
+                        Cancel
                       </button>
                     </div>
                   ) : (
-                    // Vista normal del Popup
+                    // Popup view
                     <div>
                       <button
                         onClick={() => {
                           setEditLocationId(location.id);
-                          setEditLocation({ ...location }); // Carga los datos
+                          setEditLocation({ ...location });
                         }}
                         className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2"
                       >
-                        Editar
+                        Edit
                       </button>
                       <button
                         onClick={() => handleDeleteLocation(location.id)}
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                       >
-                        Eliminar
+                        Delete
                       </button>
                     </div>
                   )}
