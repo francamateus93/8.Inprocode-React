@@ -35,13 +35,13 @@ VALUES
   "Nature Energy Massage",
   41.40568,
   2.15523,
-  "Nature Energy Massage was created with the mission of delivering massage services with the best quality possible, always seeking that clients have a great experience in our space."
+  "Nature Energy Massage is a massage center located in the Gracia neighborhood of Barcelona."
 );
 (
   "Thai Spa",
   41.39587,
   2.16111,
-  ""
+  "Thai Spa is an environment focused on Thai therapies."
 );
 
 
@@ -56,7 +56,7 @@ CREATE TABLE calendar (
 INSERT INTO calendar (name, date, description)
 VALUES
 (
-  "Massage Session",
+  "Marcia Porto",
   "2023-06-01",
   "Appointment with Massage Therapist in Nature Energy Massage, Barcelona."
 );

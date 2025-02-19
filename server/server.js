@@ -1,17 +1,18 @@
 import { createPool } from "mysql2/promise";
-import express from "express";
+import express, { Router } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mapRoutes from "./routes/map.js";
 import calendarRoutes from "./routes/calendar.js";
 import graphicsRoutes from "./routes/graphics.js";
+const router = Router();
 
 dotenv.config();
 
-const app = express();
+// const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" }));
-app.use(express.json());
+router.use(cors({ origin: "http://localhost:5173" }));
+router.use(express.json());
 
 export const db = createPool({
   host: process.env.MYSQL_HOST || "localhost",
@@ -24,15 +25,15 @@ export const db = createPool({
 });
 
 // Routes
-app.use("/map", mapRoutes);
-app.use("/calendar", calendarRoutes);
-app.use("/graphics", graphicsRoutes);
+router.use("/map", mapRoutes);
+router.use("/calendar", calendarRoutes);
+router.use("/graphics", graphicsRoutes);
 
-app.get("/", async (_req, res) => {
+router.get("/", async (_req, res) => {
   res.json({ message: "Service is running" });
 });
 
-app.post("/users", async (req, res) => {
+router.post("/users", async (req, res) => {
   try {
     const { full_name, email, phone, location, services } = req.body;
     const [results] = await db.query(
@@ -46,7 +47,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
-app.get("/users", async (_req, res) => {
+router.get("/users", async (_req, res) => {
   try {
     const [rows, fields] = await db.query("SELECT * FROM users");
     res.json(rows);
@@ -56,7 +57,7 @@ app.get("/users", async (_req, res) => {
   }
 });
 
-app.put("/users/:id", async (req, res) => {
+router.put("/users/:id", async (req, res) => {
   try {
     const { full_name, email, phone, location, services } = req.body;
     const { id } = req.params;
@@ -71,7 +72,7 @@ app.put("/users/:id", async (req, res) => {
   }
 });
 
-app.delete("/users/:id", async (req, res) => {
+router.delete("/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
     await db.query("DELETE FROM users WHERE id = ?", [id]);
@@ -84,6 +85,8 @@ app.delete("/users/:id", async (req, res) => {
 
 // Initialize server
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
+router.listen(PORT, () => {
   console.log(`Service is running on http://localhost:${PORT}`);
 });
+
+export default router;

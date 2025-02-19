@@ -39,6 +39,9 @@ function Map() {
       setIsLoading(true);
       try {
         const response = await axios.get(`${API_URL}/map`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         console.log("Response:", response.data);
         setLocations(response.data);
       } catch (error) {
@@ -57,11 +60,14 @@ function Map() {
       return;
     }
     try {
-      await axios.post(`${API_URL}/map`, newLocation, {
+      const response = await axios.post(`${API_URL}/map`, newLocation, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       await fetchLocations();
       setNewLocation({
         name: "",
@@ -71,18 +77,27 @@ function Map() {
       });
       setIsAdding(false);
     } catch (error) {
+      console.error("Error adding location:", error);
       setError(error.message);
     }
   };
 
   const handleEditLocation = async (locationId) => {
     try {
-      await axios.put(`${API_URL}/map/${locationId}`, editLocation, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.put(
+        `${API_URL}/map/${locationId}`,
+        editLocation,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       await fetchLocations();
       setEditLocationId(null);
     } catch (error) {
+      console.error("Error editing locations:", error);
       setError(error.message);
     }
   };
@@ -92,9 +107,13 @@ function Map() {
       return;
     }
     try {
-      await axios.delete(`${API_URL}/map/${locationId}`);
+      const response = await axios.delete(`${API_URL}/map/${locationId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       await fetchLocations();
     } catch (error) {
+      console.error("Error deleting locations:", error);
       setError(error.message);
     }
   };
@@ -111,8 +130,12 @@ function Map() {
   const fetchLocations = async () => {
     try {
       const response = await axios.get(`${API_URL}/map`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       setLocations(response.data);
     } catch (error) {
+      console.error("Error fetching locations:", error);
       setError(error.message);
     }
   };
@@ -132,15 +155,6 @@ function Map() {
       </div>
     );
   }
-
-  const bounds =
-    locations.length > 0
-      ? locations.reduce(
-          (acc, location) =>
-            acc.extend([location.latitude, location.longitude]),
-          L.latLngBounds()
-        )
-      : L.latLngBounds([41.2319, 2.1037], [41.2319, 2.1037]); // Default bounds
 
   return (
     <div className="container mx-auto p-4">
@@ -232,7 +246,7 @@ function Map() {
       <div id="map" className="h-screen rounded-lg overflow-hidden shadow-md">
         <MapContainer
           center={[41.2319, 2.1037]}
-          zoom={12}
+          zoom={10}
           className="size-full"
         >
           <TileLayer
@@ -322,7 +336,7 @@ function Map() {
                         onClick={() => handleEditLocation(location.id)}
                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
                       >
-                        Save Changes
+                        Save
                       </button>
                       <button
                         onClick={() => setEditLocationId(null)}

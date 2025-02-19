@@ -1,13 +1,20 @@
-import express from "express";
-import { createConnection } from "mysql2/promise";
-const router = express.Router();
+import express, { Router } from "express";
+import { createPool } from "mysql2/promise";
+import cors from "cors";
+const router = Router();
 
-const dbConfig = {
-  host: "localhost",
-  user: "root",
-  password: "franca3633",
-  database: "wellness_app",
-};
+router.use(cors({ origin: "http://localhost:5173" }));
+router.use(express.json());
+
+export const db = createPool({
+  host: process.env.MYSQL_HOST || "localhost",
+  user: process.env.MYSQL_USER || "root",
+  password: process.env.MYSQL_PASSWORD || "franca3633",
+  database: process.env.MYSQL_DATABASE || "wellness_app",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
 
 router.post("/calendar", async (req, res) => {
   const { name, date, description } = req.body;
@@ -17,12 +24,10 @@ router.post("/calendar", async (req, res) => {
     });
   }
   try {
-    const connection = await createConnection(dbConfig);
-    const [result] = await connection.execute(
+    const [result] = await db.query(
       "INSERT INTO calendar (name, date, description) VALUES (?, ?, ?)",
       [name, date, description]
     );
-    await connection.end();
 
     const newEvent = {
       id: result.insertId,
@@ -37,17 +42,14 @@ router.post("/calendar", async (req, res) => {
   }
 });
 
-// edit event
 router.put("/calendar/:id", async (req, res) => {
   const { id } = req.params;
   const { name, date, description } = req.body;
   try {
-    const connection = await createConnection(dbConfig);
-    const [result] = await connection.execute(
+    const [result] = await db.query(
       "UPDATE calendar SET name = ?, date = ?, description = ? WHERE id = ?",
       [name, date, description, id]
     );
-    await connection.end();
     if (result.affectedRows > 0) {
       res.status(200).json({ message: "Event updated successfully" });
     } else {
@@ -62,12 +64,7 @@ router.put("/calendar/:id", async (req, res) => {
 router.delete("/calendar/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const connection = await createConnection(dbConfig);
-    const [result] = await connection.execute(
-      "DELETE FROM calendar WHERE id = ?",
-      [id]
-    );
-    await connection.end();
+    const [result] = await db.query("DELETE FROM calendar WHERE id = ?", [id]);
     if (result.affectedRows > 0) {
       res.status(200).json({ message: "Event deleted successfully" });
     } else {
