@@ -1,20 +1,8 @@
 import express, { Router } from "express";
-import { createPool } from "mysql2/promise";
-import cors from "cors";
+import { db } from "../server.js";
+
 const router = Router();
-
-router.use(cors({ origin: "http://localhost:5173" }));
 router.use(express.json());
-
-export const db = createPool({
-  host: process.env.MYSQL_HOST || "localhost",
-  user: process.env.MYSQL_USER || "root",
-  password: process.env.MYSQL_PASSWORD || "franca3633",
-  database: process.env.MYSQL_DATABASE || "wellness_app",
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
 
 router.get("/", async (req, res) => {
   try {

@@ -60,11 +60,11 @@ const UserTable = () => {
   };
 
   if (loading) {
-    return <p>Cargando usuarios...</p>;
+    return <p>Loading users...</p>;
   }
 
   if (error) {
-    return <p>Error al cargar los usuarios: {error.message}</p>;
+    return <p>Error loading users: {error.message}</p>;
   }
 
   return (

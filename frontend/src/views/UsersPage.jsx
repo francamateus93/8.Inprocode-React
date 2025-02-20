@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import UserForm from "../components/services/UserForm";
-import UserTable from "../components/services/UserTable";
+import UserForm from "../components/users/UserForm";
+import UserTable from "../components/users/UserTable";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
