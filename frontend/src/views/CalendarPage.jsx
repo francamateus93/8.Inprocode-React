@@ -14,20 +14,21 @@ const CalendarPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      setIsLoading(true);
-      try {
-        const { data } = await axios.get(`${API_URL}/calendar`);
-        setEvents(data);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchEvents();
   }, []);
+
+  const fetchEvents = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get(`${API_URL}/calendar`);
+      setEvents(data);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const addEventToCalendar = async (eventData) => {
     try {
@@ -66,6 +67,14 @@ const CalendarPage = () => {
     return (
       <div className="flex items-center justify-center h-screen">
         Loading Events...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen text-red-500">
+        Error: {error}
       </div>
     );
   }
