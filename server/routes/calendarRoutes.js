@@ -16,7 +16,19 @@ export const db = createPool({
   queueLimit: 0,
 });
 
-router.post("/calendar", async (req, res) => {
+router.get("/", async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      "SELECT id, name, date, description FROM calendar"
+    );
+    res.json(rows);
+  } catch (error) {
+    console.error("Error getting events:", error);
+    res.status(500).json({ message: "Error getting events:" });
+  }
+});
+
+router.post("/", async (req, res) => {
   const { name, date, description } = req.body;
   if (!name || !date) {
     return res.status(400).json({
@@ -42,7 +54,7 @@ router.post("/calendar", async (req, res) => {
   }
 });
 
-router.put("/calendar/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { name, date, description } = req.body;
   try {
@@ -61,7 +73,7 @@ router.put("/calendar/:id", async (req, res) => {
   }
 });
 
-router.delete("/calendar/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query("DELETE FROM calendar WHERE id = ?", [id]);

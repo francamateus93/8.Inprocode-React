@@ -35,12 +35,8 @@ function Calendar() {
     const fetchEvents = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`${API_URL}/calendar`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        console.log("Response:", response.data);
-        setEvents(response.data);
+        const { data } = await axios.get(`${API_URL}/calendar`);
+        setEvents(data);
       } catch (error) {
         console.error("Error fetching events:", error);
         setError(error.message);
@@ -52,25 +48,24 @@ function Calendar() {
   }, []);
 
   const handleAddEvent = async () => {
-    if (!newEvent.name || !newEvent.date) {
+    const { name, date, description } = newEvent;
+
+    if (!name || !date) {
       alert("Please fill in all required fields.");
       return;
     }
+
     try {
-      const response = await axios.post(`${API_URL}/calendar`, newEvent, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await axios.post(`${API_URL}/calendar`, {
+        name,
+        date,
+        description,
       });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      console.log("Response:", response.data);
+
       setEvents([...events, response.data]);
       setNewEvent({ name: "", date: "", description: "" });
       setIsAdding(false);
     } catch (error) {
-      console.error("Error adding events:", error);
       setError(error.message);
     }
   };
@@ -86,9 +81,7 @@ function Calendar() {
           },
         }
       );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+
       const updatedEvents = events.map((event) => {
         if (event.id === eventId) {
           return { ...event, ...editEvent };
@@ -109,9 +102,6 @@ function Calendar() {
     }
     try {
       const response = await axios.delete(`${API_URL}/calendar/${eventId}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
       setEvents(events.filter((event) => event.id !== eventId));
     } catch (error) {
       console.error("Error deleting events:", error);

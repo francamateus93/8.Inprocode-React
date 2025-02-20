@@ -3,7 +3,7 @@ import { createPool } from "mysql2/promise";
 import cors from "cors";
 const router = Router();
 
-router.use(cors({ origin: "http://localhost:5173" }));
+router.use(cors({ origin: "http://localhost:5173", credentials: true }));
 router.use(express.json());
 
 export const db = createPool({
