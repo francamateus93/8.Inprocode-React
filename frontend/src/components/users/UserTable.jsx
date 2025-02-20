@@ -9,10 +9,10 @@ const UserTable = () => {
   const [editForm, setEditForm] = useState({});
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsersData();
   }, []);
 
-  const fetchUsers = async () => {
+  const fetchUsersData = async () => {
     setLoading(true);
     setError(null);
     try {
