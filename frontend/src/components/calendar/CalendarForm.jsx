@@ -8,33 +8,45 @@ const CalendarForm = ({
 }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [newEvent, setNewEvent] = useState({
-    name: "",
+    title: "",
     date: "",
+    time: "",
+    duration: "",
     description: "",
   });
   const [editEvent, setEditEvent] = useState({
-    name: "",
+    title: "",
     date: "",
+    time: "",
+    duration: "",
     description: "",
   });
   const [editEventId, setEditEventId] = useState(null);
   const [error, setError] = useState(null);
 
   const addEvent = async () => {
-    const { name, date, description } = newEvent;
+    const { title, date, time, duration, description } = newEvent;
     console.log("Attempting to add event:", newEvent);
-    if (!name || !date) {
+    if (!title || !date || !time || !duration) {
       alert("Please fill in all required fields.");
       return;
     }
     try {
       await addEventToCalendar({
-        name,
+        title,
         date,
+        time,
+        duration,
         description,
       });
       console.log("Event added successfully");
-      setNewEvent({ name: "", date: "", description: "" });
+      setNewEvent({
+        title: "",
+        date: "",
+        time: "",
+        duration: "",
+        description: "",
+      });
       setIsAdding(false);
     } catch (error) {
       console.error("Error adding event:", error);
@@ -46,7 +58,7 @@ const CalendarForm = ({
     handleDeleteEvent(eventId);
   };
 
-  const handleEditEventForm = async (event) => {
+  const handleEditEventForm = async (eventId) => {
     try {
       await handleEditEvent(eventId, editEvent);
       setEditEventId(null);
@@ -57,11 +69,11 @@ const CalendarForm = ({
   };
 
   const handleNewEventChange = (e) => {
-    setNewEvent({ ...newEvent, [e.target.name]: e.target.value });
+    setNewEvent({ ...newEvent, [e.target.title]: e.target.value });
   };
 
   const handleEditEventChange = (e) => {
-    setEditEvent({ ...editEvent, [e.target.name]: e.target.value });
+    setEditEvent({ ...editEvent, [e.target.title]: e.target.value });
   };
 
   return (
@@ -79,16 +91,16 @@ const CalendarForm = ({
           <h3 className="text-lg font-semibold mb-2">New Event</h3>
           <div className="mb-2">
             <label
-              htmlFor="name"
+              htmlFor="title"
               className="block text-sm font-medium text-gray-700"
             >
-              Name:
+              Title:
             </label>
             <input
               type="text"
-              id="name"
+              id="title"
               name="name"
-              value={newEvent.name}
+              value={newEvent.title}
               onChange={handleNewEventChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             />
@@ -105,6 +117,22 @@ const CalendarForm = ({
               id="date"
               name="date"
               value={newEvent.date}
+              onChange={handleNewEventChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+            />
+          </div>
+          <div className="mb-2">
+            <label
+              htmlFor="time"
+              className="block text-sm font-medium textfcn-700"
+            >
+              Time:
+            </label>
+            <input
+              type="time"
+              id="time"
+              name="time"
+              value={newEvent.time}
               onChange={handleNewEventChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             />

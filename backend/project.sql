@@ -44,19 +44,18 @@ VALUES
   "Thai Spa is an environment focused on Thai therapies."
 );
 
-
 -- Calendar
 CREATE TABLE calendar (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
+  title VARCHAR(255) NOT NULL,
   date DATE NOT NULL,
+  time TIME NOT NULL,
+  duration TIME NOT NULL,
   description TEXT
 );
 
-INSERT INTO calendar (name, date, description)
+INSERT INTO calendar (title, date, time, duration, description)
 VALUES
-(
-  "Marcia Porto",
-  "2023-06-01",
-  "Appointment with Massage Therapist in Nature Energy Massage, Barcelona."
-);
+('Haircut', '2025-02-10', '10:00:00', '01:00:00', 'Appointment with Hairdresser at 10am.'),
+('Beauty Session', '2025-02-15', '16:00:00', '01:30:00', 'Appointment with Beauty Therapist to improve skin tone.'),
+('Massage', '2025-02-20', '10:00:00', '01:30:00', 'Appointment with Massage Therapist at Nature Energy Massage.');

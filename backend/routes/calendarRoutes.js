@@ -7,7 +7,7 @@ router.use(express.json());
 router.get("/", async (req, res) => {
   try {
     const [rows] = await db.query(
-      "SELECT id, name, date, description FROM calendar"
+      "SELECT id, title, date, time, duration, description FROM calendar"
     );
     res.json(rows);
   } catch (error) {
@@ -17,22 +17,24 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { name, date, description } = req.body;
-  if (!name || !date) {
+  const { title, date, time, duration, description } = req.body;
+  if (!title || !date || !time || !duration) {
     return res.status(400).json({
       message: "Wrong data. Please provide all valid data.",
     });
   }
   try {
     const [result] = await db.query(
-      "INSERT INTO calendar (name, date, description) VALUES (?, ?, ?)",
-      [name, date, description]
+      "INSERT INTO calendar (title, date, time, duration, description) VALUES (?, ?, ?, ?, ?)",
+      [title, date, time, duration, description]
     );
 
     const newEvent = {
       id: result.insertId,
-      name,
+      title,
       date,
+      time,
+      duration,
       description,
     };
     res.status(201).json(newEvent);
@@ -44,11 +46,11 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, date, description } = req.body;
+  const { title, date, time, duration, description } = req.body;
   try {
     const [result] = await db.query(
-      "UPDATE calendar SET name = ?, date = ?, description = ? WHERE id = ?",
-      [name, date, description, id]
+      "UPDATE calendar SET title = ?, date = ?, time = ?, duration = ?, description = ? WHERE id = ?",
+      [title, date, time, duration, description, id]
     );
     if (result.affectedRows > 0) {
       res.status(200).json({ message: "Event updated successfully" });
