@@ -113,7 +113,7 @@ const CalendarForm = ({
               Date:
             </label>
             <input
-              type="datetime-local"
+              type="date"
               id="date"
               name="date"
               value={newEvent.date}
@@ -123,7 +123,7 @@ const CalendarForm = ({
           </div>
           <div className="mb-2">
             <label
-              htmlFor="time"
+              htmlFor="duration"
               className="block text-sm font-medium textfcn-700"
             >
               Time:
@@ -166,16 +166,16 @@ const CalendarForm = ({
             <div>
               <div className="mb-2">
                 <label
-                  htmlFor="name"
+                  htmlFor="title"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Name:
+                  Title:
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={editEvent.name}
+                  id="title"
+                  name="title"
+                  value={editEvent.title}
                   onChange={handleEditEventChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
@@ -188,10 +188,26 @@ const CalendarForm = ({
                   Date:
                 </label>
                 <input
-                  type="datetime-local"
+                  type="date"
                   id="date"
                   name="date"
                   value={editEvent.date}
+                  onChange={handleEditEventChange}
+                  className="mt-1 block w-full rounded-md border-gray-375 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                />
+              </div>
+              <div className="mb-2">
+                <label
+                  htmlFor="time"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Time:
+                </label>
+                <input
+                  type="time"
+                  id="time"
+                  name="time"
+                  value={editEvent.time}
                   onChange={handleEditEventChange}
                   className="mt-1 block w-full rounded-md border-gray-375 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
@@ -226,8 +242,9 @@ const CalendarForm = ({
             </div>
           ) : (
             <div>
-              <h3 className="text-lg font-semibold">{event.name}</h3>
+              <h3 className="text-lg font-semibold">{event.title}</h3>
               <p className="text-gray-600">{event.date}</p>
+              <p className="text-gray-600">{event.time}</p>
               {event.description && (
                 <p className="text-gray-700">{event.description}</p>
               )}
