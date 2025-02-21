@@ -4,7 +4,6 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import CalendarForm from "../components/calendar/CalendarForm";
 
 const API_URL = "http://localhost:5001";
 
@@ -13,6 +12,7 @@ const CalendarPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: "",
     date: "",
@@ -41,17 +41,8 @@ const CalendarPage = () => {
   const addEventToCalendar = async (eventData) => {
     try {
       const response = await axios.post(`${API_URL}/calendar`, eventData);
-      setEvents([
-        ...events,
-        {
-          id: response.data.id,
-          title: response.data.title,
-          date: response.data.date,
-          time: response.data.time,
-          duration: response.data.duration,
-          description: response.data.description,
-        },
-      ]);
+      const newEvents = [...events, response.data];
+      setEvents(newEvents);
     } catch (error) {
       console.error("Error adding event:", error);
     }
@@ -82,36 +73,73 @@ const CalendarPage = () => {
   };
 
   const handleEventClick = (info) => {
+    const eventId = info.event.id;
+    const event = events.find((event) => event.id === eventId);
+    if (event) {
+      setNewEvent({
+        id: event.id,
+        title: event.title,
+        date: event.date,
+        time: event.time,
+        duration: event.duration,
+        description: event.description,
+      });
+      setShowModal(true);
+      setIsEditMode(true);
+    }
+  };
+
+  const handleDateClick = (arg) => {
+    setNewEvent({
+      id: null,
+      title: "",
+      date: arg.date.toISOString().split("T")[0],
+      time: "",
+      duration: "",
+      description: "",
+    });
+    setIsEditMode(false);
     setShowModal(true);
-    setNewEvent({ ...newEvent, date: info.date });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { title, date, time, description } = newEvent;
-    if (!title || !date || !time) {
+    const { title, date, time, description, id } = newEvent;
+    if (!title || !time) {
       alert("Please fill in all required fields.");
       return;
     }
     try {
-      const eventData = {
-        title,
-        date,
-        time,
-        duration,
-        description,
-      };
-      await addEventToCalendar(eventData);
+      if (isEditMode) {
+        handleEditEvent(id, {
+          title,
+          date,
+          time,
+          duration: newEvent.duration,
+          description,
+        });
+      } else {
+        const eventData = {
+          title,
+          date,
+          time,
+          duration: newEvent.duration,
+          description,
+        };
+        await addEventToCalendar(eventData);
+      }
       setNewEvent({
+        id: null,
         title: "",
         date: "",
         time: "",
         duration: "",
         description: "",
       });
+      setIsEditMode(false);
       setShowModal(false);
     } catch (error) {
-      console.error("Error adding event:", error);
+      console.error("Error adding or editing event:", error);
     }
   };
 
@@ -138,18 +166,15 @@ const CalendarPage = () => {
         initialView="dayGridMonth"
         events={events}
         editable={true}
-        dateClick={handleEventClick}
+        dateClick={handleDateClick}
+        eventClick={handleEventClick}
       />
       {showModal && (
-        // <CalendarForm
-        //   events={events}
-        //   addEventToCalendar={addEventToCalendar}
-        //   handleDeleteEvent={handleDeleteEvent}
-        //   handleEditEvent={handleEditEvent}
-        // />
         <div className="fixed top-0 left-0 z-10 w-full h-full bg-gray-500 bg-opacity-75 flex items-center justify-center">
           <div className="bg-white p-4 rounded shadow-md w-1/2">
-            <h3 className="text-lg font-semibold mb-2">New Event</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              {isEditMode ? "Edit Event" : "New Event"}
+            </h3>
             <form onSubmit={handleSubmit}>
               <div className="mb-2">
                 <label
@@ -165,21 +190,6 @@ const CalendarPage = () => {
                   onChange={(e) =>
                     setNewEvent({ ...newEvent, title: e.target.value })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mb-2">
-                <label
-                  htmlFor="date"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Date:
-                </label>
-                <input
-                  type="text"
-                  id="date"
-                  value={newEvent.date}
-                  disabled
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
@@ -216,11 +226,20 @@ const CalendarPage = () => {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
+              {isEditMode && (
+                <button
+                  type="button"
+                  onClick={() => handleDeleteEvent(newEvent.id)}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
+                >
+                  Delete
+                </button>
+              )}
               <button
                 type="submit"
                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               >
-                Add Event
+                {isEditMode ? "Save Changes" : "Add Event"}
               </button>
               <button
                 type="button"

@@ -13,10 +13,11 @@ CREATE TABLE users (
 
 INSERT INTO users (full_name, email, phone, location, services)
 VALUES
-  ("Marcia Porto", "marciaporto@gmail.com", "641154121", "Barcelona, Spain", "Massage"),
-  ("Carl Gallager", "carlgallager@hotmail.com", "9334787790", "New York, USA", "Haircut"),
-  ("Raul Garcia", "raulgarcia@gmail.com", "647184789", "Barcelona, Spain", "Massage");
-  ("Joana Oliveira", "joliveira@gmail.com", "635587458", "Lisbon, Portugal", "Beauty session");
+  ("Marcia Porto", "marciaporto@gmail.com", "641154121", "Barcelona", "Massage"),
+  ("Carl Gallager", "carlgallager@hotmail.com", "9334787790", "New York", "Haircut"),
+  ("Raul Garcia", "raulgarcia@gmail.com", "647184789", "Barcelona", "Massage");
+  ("Joana Oliveira", "joliveira@gmail.com", "635587458", "Lisbon", "Beauty session");
+  ("Mateus Franca", "mateusfranca@gmail.com", "688181289", "Rio de Janeiro", "Haircut");
 
 
 -- Locations
@@ -42,6 +43,18 @@ VALUES
   41.39587,
   2.16111,
   "Thai Spa is an environment focused on Thai therapies."
+);
+(
+  "Salón de Belleza",
+  41.39968,
+  2.17111,
+  "Salón de Belleza is a beauty salon located in Barcelona."
+);
+(
+  "Pelluqueria Kamal",
+  41.40568,
+  2.15523,
+  "Kamal Barber is a barber shop specializing in haircuts."
 );
 
 -- Calendar

@@ -18,21 +18,22 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const { title, date, time, duration, description } = req.body;
-  if (!title || !date || !time || !duration) {
+  if (!title || !date || !time) {
     return res.status(400).json({
       message: "Wrong data. Please provide all valid data.",
     });
   }
   try {
+    const formattedDate = new Date(date).toISOString().split("T")[0];
     const [result] = await db.query(
       "INSERT INTO calendar (title, date, time, duration, description) VALUES (?, ?, ?, ?, ?)",
-      [title, date, time, duration, description]
+      [title, formattedDate, time, duration, description]
     );
 
     const newEvent = {
       id: result.insertId,
       title,
-      date,
+      date: formattedDate,
       time,
       duration,
       description,
