@@ -15,8 +15,8 @@ INSERT INTO users (full_name, email, phone, location, services)
 VALUES
   ("Marcia Porto", "marciaporto@gmail.com", "641154121", "Barcelona", "Massage"),
   ("Carl Gallager", "carlgallager@hotmail.com", "9334787790", "New York", "Haircut"),
-  ("Raul Garcia", "raulgarcia@gmail.com", "647184789", "Barcelona", "Massage");
-  ("Joana Oliveira", "joliveira@gmail.com", "635587458", "Lisbon", "Beauty session");
+  ("Raul Garcia", "raulgarcia@gmail.com", "647184789", "Barcelona", "Massage"),
+  ("Joana Oliveira", "joliveira@gmail.com", "635587458", "Lisbon", "Beauty session"),
   ("Mateus Franca", "mateusfranca@gmail.com", "688181289", "Rio de Janeiro", "Haircut");
 
 

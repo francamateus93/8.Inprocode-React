@@ -6,7 +6,7 @@ const UsersPage = () => {
   const [users, setUsers] = useState([]);
 
   return (
-    <div className="container mx-auto flex-col items-center justify-center h-screen p-10">
+    <div className="container mx-auto flex items-center justify-center">
       <UserForm setUsers={setUsers} />
       <UserTable users={users} setUsers={setUsers} />
     </div>

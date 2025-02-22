@@ -68,86 +68,79 @@ const UserTable = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 w-full">
+    <div className="container mx-auto w-full px-4">
       {editingUser && (
-        <div className="mb-4 p-4 bg-gray-100 rounded">
-          <h3>Edit User</h3>
+        <div className="mb-4 p-6 mx-auto w-1/2 rounded-xl transition duration-200 hover:shadow-lg">
+          <h3 className="text-xl font-bold mb-2 text-orange-400">Edit User</h3>
           <form onSubmit={handleEditSubmit}>
             {["full_name", "email", "phone", "location", "services"].map(
               (field) => (
                 <input
                   key={field}
-                  className="border p-2 w-full mb-2"
+                  className="border border-gray-300/50 text-gray-500 text-sm p-2 m-1 ml-0 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
                   type={field === "email" ? "email" : "text"}
                   name={field}
-                  placeholder={field.replace("_", " ")}
+                  placeholder={field.replace("_", " ").toUpperCase()}
                   onChange={handleEditChange}
-                  value={editForm[field] || ""} // Usar el estado editForm
+                  value={editForm[field] || ""}
                   required
                 />
               )
             )}
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-            >
-              Guardar
-            </button>
-            <button
-              type="button"
-              onClick={() => setEditingUser(null)}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
-            >
-              Cancelar
-            </button>
+            <div className="flex justify-between mt-2">
+              <button
+                type="submit"
+                className="bg-orange-400 text-white font-medium px-5 py-1 rounded-md hover:bg-orange-600/80 hover:text-white transition duration-300"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={() => setEditingUser(null)}
+                className="bg-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-400 text-white transition duration-200"
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         </div>
       )}
-      <h2 className="text-2xl font-bold mb-4">User List</h2>
-      <table className="min-w-full bg-white border border-gray-300">
+      <table className="p-4 my-8 bg-white mx-auto overflow-hidden">
         <thead>
-          <tr className="bg-gray-200">
-            {[
-              "ID",
-              "Full Name",
-              "Email",
-              "Phone",
-              "Location",
-              "Services",
-              "Actions",
-            ].map((header) => (
-              <th key={header} className="py-2 px-4 border">
-                {header}
-              </th>
-            ))}
+          <tr className=" text-orange-400 text-start">
+            {["Full Name", "Email", "Phone", "Location", "Services"].map(
+              (header) => (
+                <th key={header} className="py-3 px-4 text-start">
+                  {header}
+                </th>
+              )
+            )}
           </tr>
         </thead>
         <tbody>
           {Array.isArray(users) &&
             users.map((user) => (
-              <tr key={user.id} className="text-center">
-                {[
-                  "id",
-                  "full_name",
-                  "email",
-                  "phone",
-                  "location",
-                  "services",
-                ].map((key) => (
-                  <td key={key} className="py-2 px-4 border">
-                    {user[key]}
-                  </td>
-                ))}
-                <td className="py-2 px-4 border">
+              <tr
+                key={user.id}
+                className="text-start hover:bg-gray-100 transition duration-200"
+              >
+                {["full_name", "email", "phone", "location", "services"].map(
+                  (key) => (
+                    <td key={key} className="py-4 px-4 text-gray-500 text-sm">
+                      {user[key]}
+                    </td>
+                  )
+                )}
+                <td className="flex gap-1">
                   <button
-                    onClick={() => handleEdit(user)} // Llama a handleEdit
-                    className="bg-yellow-500 text-white px-3 py-1 rounded mx-1"
+                    onClick={() => handleEdit(user)}
+                    className="bg-orange-400 text-white font-medium px-5 py-1 rounded-md hover:bg-orange-600/80 hover:text-orange-50 transition duration-300 mx-2"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(user.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    className="bg-red-500/10 text-red-500 font-medium px-5 py-1 rounded-md hover:bg-red-500 hover:text-white transition duration-200"
                   >
                     Delete
                   </button>

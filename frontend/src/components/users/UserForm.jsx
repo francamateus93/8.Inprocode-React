@@ -35,27 +35,29 @@ const UserForm = ({ setUsers }) => {
   };
 
   return (
-    <div className="container mx-auto w-2xl">
-      <h2 className="text-2xl font-bold mb-4">Add User</h2>
-      <form onSubmit={handleSubmit}>
-        {["full_name", "email", "phone", "location", "services"].map(
-          (field) => (
-            <input
-              key={field}
-              className="text-sm border border-gray-400 rounded p-2 mb-2 w-full"
-              type={field === "email" ? "email" : "text"}
-              name={field}
-              placeholder={field.replace("_", " ")}
-              onChange={handleChange}
-              value={form[field]}
-              required
-            />
-          )
-        )}
-        <button className="bg-green-500 text-white px-4 py-2 rounded">
-          Add User
-        </button>
-      </form>
+    <div className="container mx-auto w-1/2">
+      <div className="mb-8 p-6 mx-auto rounded-xl transition duration-200 hover:shadow-lg">
+        <h2 className="text-xl font-bold mb-2 text-orange-400">Add User</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          {["full_name", "email", "phone", "location", "services"].map(
+            (field) => (
+              <input
+                key={field}
+                className="border border-gray-300/50 text-gray-500 text-sm p-2 m-1 ml-0 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+                type={field === "email" ? "email" : "text"}
+                name={field}
+                placeholder={field.replace("_", " ")}
+                onChange={handleChange}
+                value={form[field]}
+                required
+              />
+            )
+          )}
+          <button className="bg-orange-400/90 text-white text-lg hover:bg-orange-500/80 px-4 py-2 mt-3 rounded">
+            Add User
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
