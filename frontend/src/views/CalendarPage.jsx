@@ -72,23 +72,28 @@ const CalendarPage = () => {
     }
   };
 
-  const handleEventClick = (info) => {
-    const eventId = info.event.id;
-    const event = events.find((event) => event.id === eventId);
-    if (event) {
-      setNewEvent({
-        id: event.id,
-        title: event.title,
-        date: event.date,
-        time: event.time,
-        duration: event.duration,
-        description: event.description,
-      });
-      setShowModal(true);
-      setIsEditMode(true);
+  const handleEventClick = async ({ event }) => {
+    const eventId = event.id; // FullCalendar fornece o ID do evento
+    if (!eventId) {
+      console.error("Invalid event ID:", eventId);
+      return;
     }
+    try {
+      const { data } = await axios.get(`${API_URL}/calendar/${eventId}`);
+      setNewEvent({
+        id: data.id,
+        title: data.title,
+        date: data.date,
+        time: data.time,
+        duration: data.duration,
+        description: data.description,
+      });
+    } catch (error) {
+      console.error("Error fetching event:", error);
+    }
+    setShowModal(true);
+    setIsEditMode(true);
   };
-
   const handleDateClick = (arg) => {
     setNewEvent({
       id: null,
@@ -167,7 +172,7 @@ const CalendarPage = () => {
         events={events}
         editable={true}
         dateClick={handleDateClick}
-        eventClick={handleEventClick}
+        eventClick={(info) => handleEventClick(info)}
       />
       {showModal && (
         <div className="fixed top-0 left-0 z-10 w-full h-full bg-gray-500 bg-opacity-75 flex items-center justify-center">
