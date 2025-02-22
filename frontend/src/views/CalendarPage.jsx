@@ -165,7 +165,7 @@ const CalendarPage = () => {
   }
 
   return (
-    <div>
+    <div className="px-10">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"

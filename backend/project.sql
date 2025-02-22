@@ -37,19 +37,19 @@ VALUES
   41.40568,
   2.15523,
   "Nature Energy Massage is a massage center located in the Gracia neighborhood of Barcelona."
-);
+),
 (
   "Thai Spa",
   41.39587,
   2.16111,
   "Thai Spa is an environment focused on Thai therapies."
-);
+),
 (
-  "Salón de Belleza",
+  "Saloon de Belleza",
   41.39968,
   2.17111,
   "Salón de Belleza is a beauty salon located in Barcelona."
-);
+),
 (
   "Pelluqueria Kamal",
   41.40568,
@@ -69,6 +69,8 @@ CREATE TABLE calendar (
 
 INSERT INTO calendar (title, date, time, duration, description)
 VALUES
-('Haircut', '2025-02-10', '10:00:00', '01:00:00', 'Appointment with Hairdresser at 10am.'),
-('Beauty Session', '2025-02-15', '16:00:00', '01:30:00', 'Appointment with Beauty Therapist to improve skin tone.'),
-('Massage', '2025-02-20', '10:00:00', '01:30:00', 'Appointment with Massage Therapist at Nature Energy Massage.');
+('Haircut', '2025-02-04', '10:00:00', '01:00:00', 'Appointment with Hairdresser at 10am.'),
+('Beauty', '2025-02-10', '16:00:00', '01:30:00', 'Appointment with Beauty Therapist to improve skin tone.'),
+('Massage', '2025-02-20', '12:00:00', '01:30:00', 'Appointment with Massage Therapist at Nature Energy Massage.'),
+('Massage', '2025-02-06', '12:00:00', '01:30:00', 'Appointment with Massage Therapist at Nature Energy Massage.');
+
