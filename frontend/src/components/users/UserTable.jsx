@@ -77,7 +77,7 @@ const UserTable = () => {
               (field) => (
                 <input
                   key={field}
-                  className="border border-gray-300/50 text-gray-500 text-sm p-2 m-1 ml-0 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+                  className="border border-gray-300/50 shadow-xs text-gray-500 text-sm p-2 m-1 ml-0 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
                   type={field === "email" ? "email" : "text"}
                   name={field}
                   placeholder={field.replace("_", " ").toUpperCase()}
@@ -97,7 +97,7 @@ const UserTable = () => {
               <button
                 type="button"
                 onClick={() => setEditingUser(null)}
-                className="bg-gray-300 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-400 text-white transition duration-200"
+                className="bg-gray-300 text-white px-5 py-2 rounded-md hover:bg-gray-400 transition duration-200"
               >
                 Cancel
               </button>
@@ -126,12 +126,12 @@ const UserTable = () => {
               >
                 {["full_name", "email", "phone", "location", "services"].map(
                   (key) => (
-                    <td key={key} className="py-4 px-4 text-gray-500 text-sm">
+                    <td key={key} className="p-4 text-gray-500 text-sm">
                       {user[key]}
                     </td>
                   )
                 )}
-                <td className="flex gap-1">
+                <td className="flex gap-1 p-4">
                   <button
                     onClick={() => handleEdit(user)}
                     className="bg-orange-400 text-white font-medium px-5 py-1 rounded-md hover:bg-orange-600/80 hover:text-orange-50 transition duration-300 mx-2"

@@ -53,7 +53,7 @@ const UserForm = ({ setUsers }) => {
               />
             )
           )}
-          <button className="bg-orange-400/90 text-white text-lg hover:bg-orange-500/80 px-4 py-2 mt-3 rounded">
+          <button className="bg-orange-400/90 text-white text-lg hover:bg-orange-500/80 px-4 py-2 mt-3 rounded font-medium">
             Add User
           </button>
         </form>

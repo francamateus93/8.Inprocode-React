@@ -73,7 +73,7 @@ const CalendarPage = () => {
   };
 
   const handleEventClick = async ({ event }) => {
-    const eventId = event.id; // FullCalendar fornece o ID do evento
+    const eventId = event.id;
     if (!eventId) {
       console.error("Invalid event ID:", eventId);
       return;
@@ -110,6 +110,7 @@ const CalendarPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { title, date, time, description, id } = newEvent;
+    console.log(`Editing Event ID: ${id}`);
     if (!title || !time) {
       alert("Please fill in all required fields.");
       return;
@@ -165,7 +166,7 @@ const CalendarPage = () => {
   }
 
   return (
-    <div className="px-10">
+    <div className="container mx-auto w-3/4 px-4">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -173,18 +174,25 @@ const CalendarPage = () => {
         editable={true}
         dateClick={handleDateClick}
         eventClick={(info) => handleEventClick(info)}
+        eventTimeFormat={{
+          hour: "numeric",
+          minute: "2-digit",
+          meridiem: false,
+        }}
+        eventBackgroundColor="#ff9800"
+        eventColor="#ff9800"
       />
       {showModal && (
-        <div className="fixed top-0 left-0 z-10 w-full h-full bg-gray-500 bg-opacity-75 flex items-center justify-center">
-          <div className="bg-white p-4 rounded shadow-md w-1/2">
-            <h3 className="text-lg font-semibold mb-2">
+        <div className="fixed top-0 left-0 z-10 w-full h-full bg-black/70 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-md shadow-md w-1/2">
+            <h3 className="text-2xl font-bold mb-4 text-orange-400">
               {isEditMode ? "Edit Event" : "New Event"}
             </h3>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="">
               <div className="mb-2">
                 <label
                   htmlFor="title"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-600"
                 >
                   Title:
                 </label>
@@ -195,13 +203,13 @@ const CalendarPage = () => {
                   onChange={(e) =>
                     setNewEvent({ ...newEvent, title: e.target.value })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  className="mt-1 p-1 block w-full rounded text-sm text-gray-500 border-gray-300/50 border focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
               <div className="mb-2">
                 <label
                   htmlFor="time"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-600"
                 >
                   Time:
                 </label>
@@ -212,13 +220,13 @@ const CalendarPage = () => {
                   onChange={(e) =>
                     setNewEvent({ ...newEvent, time: e.target.value })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  className="mt-1 p-1 block w-full rounded text-sm text-gray-500 border-gray-300/50 border focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
               <div className="mb-2">
                 <label
                   htmlFor="description"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-600"
                 >
                   Description:
                 </label>
@@ -228,31 +236,39 @@ const CalendarPage = () => {
                   onChange={(e) =>
                     setNewEvent({ ...newEvent, description: e.target.value })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  className="mt-1 p-1 block w-full rounded text-sm text-gray-500 border-gray-300/50 border focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
-              {isEditMode && (
-                <button
-                  type="button"
-                  onClick={() => handleDeleteEvent(newEvent.id)}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2"
-                >
-                  Delete
-                </button>
-              )}
-              <button
-                type="submit"
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              >
-                {isEditMode ? "Save Changes" : "Add Event"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowModal(false)}
-                className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded ml-2"
-              >
-                Cancel
-              </button>
+              <div className="flex items-center justify-between mt-6">
+                <div>
+                  <button
+                    type="submit"
+                    className="bg-orange-400/90 text-white text-lg hover:bg-orange-600/80 px-6 py-3 rounded-md font-medium"
+                  >
+                    {isEditMode ? "Save" : "Add Event"}
+                  </button>
+                </div>
+                {isEditMode && (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteEvent(newEvent.id)}
+                      className="bg-red-500/10 text-red-500 font-medium px-5 py-3 rounded-md hover:bg-red-500 hover:text-white transition duration-200"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="bg-gray-300 text-white px-5 py-3 rounded-md hover:bg-gray-400 transition duration-200"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             </form>
           </div>
         </div>
