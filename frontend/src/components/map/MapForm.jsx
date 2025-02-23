@@ -91,17 +91,19 @@ const MapForm = ({ locations, setLocations }) => {
     <div>
       <button
         onClick={() => setIsAdding(!isAdding)}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
+        className="bg-orange-400/90 text-white text-lg hover:bg-orange-500/80 px-4 py-2 mt-3 rounded font-medium"
       >
         {isAdding ? "Cancel" : "Add Location"}
       </button>
       {isAdding && (
-        <div className="bg-gray-100 p-4 rounded shadow-md mb-4">
-          <h3 className="text-lg font-semibold mb-2">New Location</h3>
-          {["name", "latitude", "longitude"].map((field) => (
+        <div className="mb-4 p-6 mx-auto rounded-xl my-2 transition duration-200 hover:shadow-lg">
+          <h3 className="text-xl font-bold mb-2 text-orange-400">
+            New Location
+          </h3>
+          {["Name", "Latitude", "Longitude"].map((field) => (
             <input
               key={field}
-              className="text-sm border border-gray-400 rounded p-2 mb-2 w-full"
+              className="border border-gray-300/50 shadow-xs text-gray-500 text-sm p-2 m-1 ml-0 rounded-md flex w-full focus:outline-none focus:ring-2 focus:ring-blue-200"
               type={field === "number" ? "number" : "text"}
               name={field}
               placeholder={field.replace("_", " ")}
@@ -115,11 +117,11 @@ const MapForm = ({ locations, setLocations }) => {
             placeholder="Description"
             value={newLocation.description}
             onChange={handleNewLocationChange}
-            className="block w-full p-2 border rounded mt-2"
+            className="border border-gray-300/50 shadow-xs text-gray-500 text-sm p-2 m-1 ml-0 rounded-md block w-full focus:outline-none focus:ring-2 focus:ring-blue-200"
           />
           <button
             onClick={handleAddLocation}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
+            className="bg-orange-400 text-white font-medium px-6 py-3 rounded-md mt-4 text-lg hover:bg-orange-600/80 hover:text-white transition duration-300"
           >
             Save Location
           </button>

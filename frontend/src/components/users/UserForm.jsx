@@ -39,7 +39,7 @@ const UserForm = ({ setUsers }) => {
       <div className="mb-8 p-6 mx-auto rounded-xl transition duration-200 hover:shadow-lg">
         <h2 className="text-xl font-bold mb-2 text-orange-400">Add User</h2>
         <form onSubmit={handleSubmit} className="flex flex-col">
-          {["full_name", "email", "phone", "location", "services"].map(
+          {["Full Name", "Email", "Phone", "Location", "Services"].map(
             (field) => (
               <input
                 key={field}

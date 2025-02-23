@@ -20,7 +20,7 @@ const NavMenu = ({ isHomePage, isOpen }) => {
         <Link
           key={path}
           to={path}
-          className={`hover:font-bold font-medium mt-2 md:mt-0 ${
+          className={`hover:font-medium hover:text-orange-500 transition duration-300 font-medium mt-2 md:mt-0 ${
             isHomePage ? "text-white" : "text-dark"
           }`}
         >

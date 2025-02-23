@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import markerIcon from "../../public/images/marker-icon.png";
 import markerShadow from "../../public/images/marker-shadow.png";
-import LocationForm from "../components/map/MapForm";
+import MapForm from "../components/map/MapForm";
 
 const customIcon = new L.Icon({
   iconUrl: markerIcon,
@@ -57,9 +57,7 @@ const MapPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Map</h2>
-
-      <LocationForm locations={locations} refetchLocations={fetchLocations} />
+      <MapForm locations={locations} refetchLocations={fetchLocations} />
 
       {/* Map */}
       <div id="map" className="h-screen rounded-lg overflow-hidden shadow-md">

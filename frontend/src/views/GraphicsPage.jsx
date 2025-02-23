@@ -104,15 +104,23 @@ const GraphicsPage = () => {
   }
 
   return (
-    <div className="p-4">
-      {" "}
-      <h2 className="text-2xl font-semibold mb-4">Services Chart</h2>{" "}
-      <div className="mb-8">
-        {" "}
-        <Bar data={barData} />
+    <div className="container mx-auto flex items-center justify-around">
+      <div className="w-2/4">
+        <h2 className="text-xl font-bold mb-2 text-orange-400">
+          Services Chart
+        </h2>{" "}
+        <div className="mb-8">
+          <Bar data={barData} />
+        </div>
       </div>
-      <h2 className="text-2xl font-semibold mb-4">Locations Chart</h2>
-      <Pie data={pieData} />
+      <div className="w-1/3">
+        <h2 className="text-xl font-bold mb-2 text-orange-400">
+          Locations Chart
+        </h2>
+        <div className="mb-8">
+          <Pie data={pieData} />
+        </div>
+      </div>
     </div>
   );
 };
