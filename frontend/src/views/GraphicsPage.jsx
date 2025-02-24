@@ -106,17 +106,13 @@ const GraphicsPage = () => {
   return (
     <div className="container mx-auto flex items-center justify-around">
       <div className="w-2/4">
-        <h2 className="text-xl font-bold mb-2 text-orange-400">
-          Services Chart
-        </h2>{" "}
+        <h2 className="text-xl font-bold mb-2 text-orange-400">Services</h2>{" "}
         <div className="mb-8">
           <Bar data={barData} />
         </div>
       </div>
       <div className="w-1/3">
-        <h2 className="text-xl font-bold mb-2 text-orange-400">
-          Locations Chart
-        </h2>
+        <h2 className="text-xl font-bold mb-2 text-orange-400">Locations</h2>
         <div className="mb-8">
           <Pie data={pieData} />
         </div>

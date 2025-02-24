@@ -1,4 +1,4 @@
-import { addUser } from "./UserService";
+import { addUser, fetchUsers } from "./UserService";
 import React, { useState } from "react";
 
 const UserForm = ({ setUsers }) => {
@@ -11,17 +11,14 @@ const UserForm = ({ setUsers }) => {
   });
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const newUser = await addUser(form);
-      setUsers((prevUsers) => [...prevUsers, newUser]);
+      const createdUser = await addUser(form);
+      setUsers((prevUsers) => [...prevUsers, createdUser]);
       setForm({
         full_name: "",
         email: "",
@@ -29,6 +26,7 @@ const UserForm = ({ setUsers }) => {
         location: "",
         services: "",
       });
+      fetchUsers(createdUser);
     } catch (error) {
       console.error("Error adding user:", error);
     }
@@ -39,7 +37,7 @@ const UserForm = ({ setUsers }) => {
       <div className="mb-8 p-6 mx-auto rounded-xl transition duration-200 hover:shadow-lg">
         <h2 className="text-xl font-bold mb-2 text-orange-400">Add User</h2>
         <form onSubmit={handleSubmit} className="flex flex-col">
-          {["Full Name", "Email", "Phone", "Location", "Services"].map(
+          {["full_name", "email", "phone", "location", "services"].map(
             (field) => (
               <input
                 key={field}

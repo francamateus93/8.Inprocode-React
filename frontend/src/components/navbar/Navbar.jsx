@@ -20,7 +20,10 @@ const Navbar = () => {
       } w-full p-10 flex flex-col md:flex-row justify-center items-center uppercase tracking-tight z-10`}
     >
       <div className="md:hidden">
-        <button onClick={toggleMenu} className="focus:outline-none">
+        <button
+          onClick={toggleMenu}
+          className="focus:outline-none hover:text-orange-500 transition duration-300"
+        >
           <svg
             className="w-10 h-10 mt-4"
             fill="none"
@@ -37,7 +40,7 @@ const Navbar = () => {
           </svg>
         </button>
       </div>
-      <NavMenu isHomePage={isHomePage} isOpen={isOpen} />
+      <NavMenu isHomePage={isHomePage} isOpen={isOpen} className="block" />
     </nav>
   );
 };

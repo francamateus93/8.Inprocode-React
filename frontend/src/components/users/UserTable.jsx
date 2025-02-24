@@ -70,7 +70,7 @@ const UserTable = () => {
   return (
     <div className="container mx-auto w-full px-4">
       {editingUser && (
-        <div className="mb-4 p-6 mx-auto w-1/2 rounded-xl transition duration-200 hover:shadow-lg">
+        <div className="mb-4 p-6 mx-auto w-full rounded-xl transition duration-200 hover:shadow-lg">
           <h3 className="text-xl font-bold mb-2 text-orange-400">Edit User</h3>
           <form onSubmit={handleEditSubmit}>
             {["full_name", "email", "phone", "location", "services"].map(

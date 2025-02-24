@@ -35,7 +35,7 @@ const MapForm = ({ locations, setLocations }) => {
         longitude: "",
         description: "",
       });
-      setIsAdding(false);
+      setIsAdding(true);
       refetchLocations();
     } catch (error) {
       console.error("Error adding location:", error);

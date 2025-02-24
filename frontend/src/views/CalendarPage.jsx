@@ -41,8 +41,7 @@ const CalendarPage = () => {
   const addEventToCalendar = async (eventData) => {
     try {
       const response = await axios.post(`${API_URL}/calendar`, eventData);
-      const newEvents = [...events, response.data];
-      setEvents(newEvents);
+      setEvents((prevEvents) => [...prevEvents, response.data]); // Use functional approach
     } catch (error) {
       console.error("Error adding event:", error);
     }
@@ -51,7 +50,9 @@ const CalendarPage = () => {
   const handleDeleteEvent = async (eventId) => {
     try {
       await axios.delete(`${API_URL}/calendar/${eventId}`);
-      setEvents(events.filter((event) => event.id !== eventId));
+      setEvents((prevEvents) =>
+        prevEvents.filter((event) => event.id !== eventId)
+      );
     } catch (error) {
       console.error("Error deleting event:", error);
     }
@@ -96,12 +97,8 @@ const CalendarPage = () => {
   };
   const handleDateClick = (arg) => {
     setNewEvent({
-      id: null,
-      title: "",
+      ...initialEventState,
       date: arg.date.toISOString().split("T")[0],
-      time: "",
-      duration: "",
-      description: "",
     });
     setIsEditMode(false);
     setShowModal(true);
@@ -110,14 +107,13 @@ const CalendarPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { title, date, time, description, id } = newEvent;
-    console.log(`Editing Event ID: ${id}`);
     if (!title || !time) {
       alert("Please fill in all required fields.");
       return;
     }
     try {
       if (isEditMode) {
-        handleEditEvent(id, {
+        await handleEditEvent(id, {
           title,
           date,
           time,
@@ -173,7 +169,7 @@ const CalendarPage = () => {
         events={events}
         editable={true}
         dateClick={handleDateClick}
-        eventClick={(info) => handleEventClick(info)}
+        eventClick={(event) => handleEventClick(event)}
         eventTimeFormat={{
           hour: "numeric",
           minute: "2-digit",

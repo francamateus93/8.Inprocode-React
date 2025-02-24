@@ -26,8 +26,7 @@ CREATE TABLE map (
   name VARCHAR(255) NOT NULL,
   latitude DECIMAL(10, 6) NOT NULL,
   longitude DECIMAL(10, 6) NOT NULL,
-  description TEXT,
-  creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  description TEXT
 );
 
 INSERT INTO map (name, latitude, longitude, description)
@@ -52,8 +51,8 @@ VALUES
 ),
 (
   "Pelluqueria Kamal",
-  41.40568,
-  2.15523,
+  41.40854,
+  2.12223,
   "Kamal Barber is a barber shop specializing in haircuts."
 );
 
@@ -72,5 +71,5 @@ VALUES
 ('Haircut', '2025-02-04', '10:00:00', '01:00:00', 'Appointment with Hairdresser at 10am.'),
 ('Beauty', '2025-02-10', '16:00:00', '01:30:00', 'Appointment with Beauty Therapist to improve skin tone.'),
 ('Massage', '2025-02-20', '12:00:00', '01:30:00', 'Appointment with Massage Therapist at Nature Energy Massage.'),
-('Massage', '2025-02-06', '12:00:00', '01:30:00', 'Appointment with Massage Therapist at Nature Energy Massage.');
+('Yoga', '2025-02-06', '12:00:00', '01:00:00', 'Appointment with YogaOne.');
 
