@@ -62,26 +62,6 @@ Clone the project
   git clone https://github.com/francamateus93/8.Inprocode-React.git
 ```
 
-### Frontend
-
-Go to the project directory
-
-```bash
-  cd 8.Inprocode-React/frontend
-```
-
-Install dependencies
-
-```bash
-  npm install
-```
-
-Start the app
-
-```bash
-  npm run dev
-```
-
 ### Backend
 
 Go to the project directory
@@ -100,6 +80,26 @@ Start the server
 
 ```bash
   npm nodemon
+```
+
+### Frontend
+
+Go to the project directory
+
+```bash
+  cd 8.Inprocode-React/frontend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the app
+
+```bash
+  npm run dev
 ```
 
 ## 📘 Documentation
